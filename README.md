@@ -1,5 +1,5 @@
 🗂️ File Renamer Web App
-Uma aplicação web simples e poderosa para renomear arquivos em lote, especialmente útil para limpar nomes de arquivos de música e outros arquivos que contêm textos indesejados em seus nomes.
+Um website simples para renomear arquivos em lote, especialmente útil para limpar nomes de arquivos de música e outros arquivos que contêm textos indesejados em seus nomes.
 
 ✨ Funcionalidades
 1. Renomeação Básica
