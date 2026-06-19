@@ -3,7 +3,7 @@
 <p>
   <a href="./README.pt-PT.md"><strong>Português de Portugal</strong></a>
   &nbsp;|&nbsp;
-  <a href="./README.en.md"><strong>English</strong></a>
+  <a href="./README.md"><strong>English</strong></a>
 </p>
 
 Uma aplicação web para renomear ficheiros em grande escala dentro de um ZIP, com foco no que o Windows e ferramentas genéricas nem sempre resolvem bem: regras combinadas, pré-visualização clara, avisos de conflito e processamento local no navegador.

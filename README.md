@@ -3,7 +3,7 @@
 <p>
   <a href="./README.pt-PT.md"><strong>Português de Portugal</strong></a>
   &nbsp;|&nbsp;
-  <a href="./README.en.md"><strong>English</strong></a>
+  <a href="./README.md"><strong>English</strong></a>
 </p>
 
 A browser-based app for bulk-renaming files inside a ZIP archive, focused on the cases Windows and generic tools do not handle elegantly: combined rules, clear previews, conflict warnings and local processing.
