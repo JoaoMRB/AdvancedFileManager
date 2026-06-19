@@ -29,9 +29,17 @@ O objetivo não é apenas “renomear ficheiros”. A proposta é tornar renomea
 - Processar tudo localmente, sem servidor.
 - Suporte para ficheiros ZIP até 500 MB.
 
+## Aceder Online
+
+Podes aceder à app diretamente através do GitHub Pages:
+
+🌐 **[Gestor Avançado de Ficheiros](https://joaomrb.github.io/AdvancedFileManager/)**
+
+Ou descarrega e executa localmente abrindo `index.html` no navegador.
+
 ## Como usar
 
-1. Abre o `index.html` no navegador.
+1. Abre o `index.html` no navegador ou acede através do link acima.
 2. Arrasta um ficheiro ZIP para a área de seleção ou clica para escolher.
 3. Escolhe o modo de renomeação.
 4. Ajusta as opções e confirma a pré-visualização.

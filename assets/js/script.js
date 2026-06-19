@@ -39,6 +39,7 @@ const translations = {
         dropTitle: 'Larga o ZIP aqui',
         dropZone: 'ou clica para selecionar um ficheiro até 500 MB.',
         previewButton: 'Pré-visualizar',
+        resetButton: 'Reset',
         processButton: 'Processar e transferir',
         createdBy: 'Criado por',
         statFiles: 'Ficheiros',
@@ -56,7 +57,11 @@ const translations = {
         unexpectedError: 'Ocorreu um erro inesperado. Tenta novamente.',
         browserUnsupported: 'O teu navegador não suporta todas as funcionalidades necessárias. Usa um navegador mais recente.',
         fileTooLarge: 'O ficheiro é demasiado grande. O tamanho máximo permitido é 500 MB.',
-        downloadName: 'ficheiros_processados.zip'
+        downloadName: 'ficheiros_processados.zip',
+        regexTooltip: 'Ativa expressões regulares. Exemplos: \\d+ (números), \\w+ (palavras), .* (qualquer texto), [a-z]+ (letras)',
+        textToRemoveTooltip: 'Escreve o texto que queres procurar e substituir. Usa regex se ativado.',
+        replaceTextTooltip: 'Deixa vazio para remover o texto. Em regex, usa $1, $2 para referências de grupos. Ex.: (\\w+) -> $1_backup',
+        resetTooltip: 'Limpar todos os campos e começar do zero'
     },
     en: {
         appTitle: 'Advanced File Manager',
@@ -93,6 +98,7 @@ const translations = {
         dropTitle: 'Drop the ZIP here',
         dropZone: 'or click to choose a file up to 500 MB.',
         previewButton: 'Preview',
+        resetButton: 'Reset',
         processButton: 'Process and download',
         createdBy: 'Created by',
         statFiles: 'Files',
@@ -110,7 +116,11 @@ const translations = {
         unexpectedError: 'An unexpected error occurred. Please try again.',
         browserUnsupported: 'Your browser does not support all required features. Please use a newer browser.',
         fileTooLarge: 'The file is too large. The maximum allowed size is 500 MB.',
-        downloadName: 'processed_files.zip'
+        downloadName: 'processed_files.zip',
+        regexTooltip: 'Enable regular expressions. Examples: \\d+ (numbers), \\w+ (words), .* (any text), [a-z]+ (letters)',
+        textToRemoveTooltip: 'Write the text you want to find and replace. Enable regex for advanced patterns.',
+        replaceTextTooltip: 'Leave empty to remove the text. In regex, use $1, $2 for group references. Ex.: (\\w+) -> $1_backup',
+        resetTooltip: 'Clear all fields and start from scratch'
     }
 };
 
@@ -119,6 +129,7 @@ const elements = {
     fileInput: document.getElementById('fileInput'),
     processButton: document.getElementById('processButton'),
     previewButton: document.getElementById('previewButton'),
+    resetButton: document.getElementById('resetButton'),
     fileList: document.getElementById('fileList'),
     statusMessage: document.getElementById('statusMessage'),
     progressBar: document.getElementById('progressBar'),
@@ -151,6 +162,12 @@ function applyLanguage(language) {
     document.querySelectorAll('.language-button').forEach(button => {
         button.classList.toggle('active', button.dataset.lang === language);
     });
+
+    // Apply dynamic tooltips for regex
+    document.getElementById('useRegex').title = t('regexTooltip');
+    document.getElementById('textToRemove').title = t('textToRemoveTooltip');
+    document.getElementById('replaceText').title = t('replaceTextTooltip');
+    document.getElementById('resetButton').title = t('resetTooltip');
 
     updatePreview();
 }
@@ -296,6 +313,31 @@ function sanitizePath(path) {
         .join('/');
 }
 
+function resetForm() {
+    // Limpar campos de renomeação
+    document.getElementById('textToRemove').value = '';
+    document.getElementById('replaceText').value = '';
+    document.getElementById('useRegex').checked = false;
+    document.getElementById('textToAdd').value = '';
+    document.getElementById('addPosition').value = 'start';
+    
+    // Limpar campos de texto
+    document.getElementById('caseFormat').value = 'none';
+    document.getElementById('normalizeSeparators').checked = true;
+    document.getElementById('trimSpaces').checked = true;
+    document.getElementById('removeAccents').checked = false;
+    
+    // Limpar campos de sequência
+    document.getElementById('batchPattern').value = '';
+    document.getElementById('startNumber').value = '1';
+    document.getElementById('paddingSize').value = '3';
+    
+    // Limpar mensagens e atualizar pré-visualização
+    elements.statusMessage.textContent = '';
+    elements.statusMessage.className = 'status-message';
+    updatePreview();
+}
+
 function buildPreview() {
     const seen = new Map();
     const rows = originalFiles.map((fileName, index) => {
@@ -398,6 +440,8 @@ async function handleFileSelect(file) {
 }
 
 elements.previewButton.addEventListener('click', updatePreview);
+
+elements.resetButton.addEventListener('click', resetForm);
 
 elements.processButton.addEventListener('click', async () => {
     if (!zipFile) {

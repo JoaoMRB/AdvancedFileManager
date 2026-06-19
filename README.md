@@ -29,9 +29,17 @@ The point is not simply to rename files. The goal is to make large renaming jobs
 - Process everything locally in the browser, with no server.
 - Support ZIP files up to 500 MB.
 
+## Access Online
+
+You can access the app directly via GitHub Pages:
+
+🌐 **[Advanced File Manager](https://joaomrb.github.io/AdvancedFileManager/)**
+
+Or download and run locally by opening `index.html` in your browser.
+
 ## How To Use
 
-1. Open `index.html` in your browser.
+1. Open `index.html` in your browser or access via the link above.
 2. Drag a ZIP file into the drop zone or click to choose it.
 3. Choose the renaming mode.
 4. Adjust the options and review the preview.
