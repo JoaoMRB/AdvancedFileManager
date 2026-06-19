@@ -36,8 +36,8 @@ const translations = {
         batchPatternHelp: 'Usa {n} para o número e {ext} para a extensão.',
         startNumberLabel: 'Início',
         paddingSizeLabel: 'Dígitos',
-        dropTitle: 'Larga o ZIP aqui',
-        dropZone: 'ou clica para selecionar um ficheiro até 500 MB.',
+        dropTitle: 'Larga ficheiros aqui',
+        dropZone: 'ou clica para selecionar um ou mais ficheiros até 500 MB.',
         previewButton: 'Pré-visualizar',
         resetButton: 'Reset',
         processButton: 'Processar e transferir',
@@ -46,12 +46,12 @@ const translations = {
         statChanged: 'Alterados',
         statConflicts: 'Conflitos',
         defaultBatchPattern: 'Ficheiro_{n}',
-        emptyState: 'Escolhe um ZIP para veres a pré-visualização.',
-        filesFound: count => `${count} ficheiro${count === 1 ? '' : 's'} encontrado${count === 1 ? '' : 's'} no ZIP.`,
+        emptyState: 'Escolhe um ZIP ou ficheiros para veres a pré-visualização.',
+        filesFound: count => `${count} ficheiro${count === 1 ? '' : 's'} encontrado${count === 1 ? '' : 's'}.`,
         conflictWarning: count => `${count} conflito${count === 1 ? '' : 's'} detetado${count === 1 ? '' : 's'}. Ajusta as regras antes de processar.`,
         invalidRegex: 'Regex inválida. A regra de substituição foi ignorada.',
-        zipReadError: message => `Erro ao ler o ficheiro ZIP: ${message}`,
-        processSuccess: 'Ficheiros processados com sucesso.',
+        zipReadError: message => `Erro ao ler o ficheiro: ${message}`,
+        processSuccess: 'Ficheiros processados com sucesso.', 
         processBlocked: 'Resolve os conflitos antes de gerar o ZIP.',
         processError: message => `Erro ao processar o ficheiro: ${message}`,
         unexpectedError: 'Ocorreu um erro inesperado. Tenta novamente.',
@@ -95,8 +95,8 @@ const translations = {
         batchPatternHelp: 'Use {n} for the number and {ext} for the extension.',
         startNumberLabel: 'Start',
         paddingSizeLabel: 'Digits',
-        dropTitle: 'Drop the ZIP here',
-        dropZone: 'or click to choose a file up to 500 MB.',
+        dropTitle: 'Drop files here',
+        dropZone: 'or click to select one or more files up to 500 MB.',
         previewButton: 'Preview',
         resetButton: 'Reset',
         processButton: 'Process and download',
@@ -105,11 +105,11 @@ const translations = {
         statChanged: 'Changed',
         statConflicts: 'Conflicts',
         defaultBatchPattern: 'File_{n}',
-        emptyState: 'Choose a ZIP to see the preview.',
-        filesFound: count => `${count} file${count === 1 ? '' : 's'} found in the ZIP.`,
+        emptyState: 'Choose a ZIP or files to see the preview.',
+        filesFound: count => `${count} file${count === 1 ? '' : 's'} found.`,
         conflictWarning: count => `${count} conflict${count === 1 ? '' : 's'} detected. Adjust the rules before processing.`,
         invalidRegex: 'Invalid regex. The replacement rule was ignored.',
-        zipReadError: message => `Error reading the ZIP file: ${message}`,
+        zipReadError: message => `Error reading the file: ${message}`,
         processSuccess: 'Files processed successfully.',
         processBlocked: 'Resolve conflicts before creating the ZIP.',
         processError: message => `Error processing the file: ${message}`,
@@ -411,28 +411,82 @@ function validateFileSize(file) {
     return true;
 }
 
-async function handleFileSelect(file) {
-    if (!validateFileSize(file)) {
+function validateTotalFileSize(files) {
+    const maxTotalSize = 500 * 1024 * 1024;
+    let totalSize = 0;
+    
+    for (let file of files) {
+        totalSize += file.size;
+    }
+    
+    if (totalSize > maxTotalSize) {
+        showStatus(t('fileTooLarge'), 'error');
+        return false;
+    }
+    
+    return true;
+}
+
+async function createZipFromFiles(files) {
+    const zip = new JSZip();
+    
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const fileData = await file.arrayBuffer();
+        zip.file(file.name, fileData);
+    }
+    
+    return zip.generateAsync({ type: 'blob' });
+}
+
+async function handleFileSelect(files) {
+    if (!files || files.length === 0) {
+        return;
+    }
+
+    // Se for um ficheiro, validar tamanho individual
+    if (files.length === 1 && !validateFileSize(files[0])) {
+        elements.processButton.disabled = true;
+        elements.previewButton.disabled = true;
+        return;
+    }
+    
+    // Se forem múltiplos ficheiros, validar tamanho total
+    if (files.length > 1 && !validateTotalFileSize(files)) {
         elements.processButton.disabled = true;
         elements.previewButton.disabled = true;
         return;
     }
 
-    zipFile = file;
     elements.processButton.disabled = false;
     elements.previewButton.disabled = false;
 
-    const zip = new JSZip();
     try {
-        const content = await zip.loadAsync(file);
-        originalFiles = [];
-        content.forEach((relativePath, zipEntry) => {
-            if (!zipEntry.dir) {
-                originalFiles.push(relativePath);
+        // Se for um ficheiro ZIP, carregar diretamente
+        if (files.length === 1 && files[0].type === 'application/zip') {
+            zipFile = files[0];
+            const zip = new JSZip();
+            const content = await zip.loadAsync(files[0]);
+            originalFiles = [];
+            content.forEach((relativePath, zipEntry) => {
+                if (!zipEntry.dir) {
+                    originalFiles.push(relativePath);
+                }
+            });
+            showStatus(t('filesFound', originalFiles.length), 'success');
+        } else {
+            // Se forem múltiplos ficheiros ou tipos diferentes, criar ZIP automaticamente
+            const createdZip = await createZipFromFiles(files);
+            zipFile = new File([createdZip], 'created_archive.zip', { type: 'application/zip' });
+            
+            originalFiles = [];
+            for (let file of files) {
+                originalFiles.push(file.name);
             }
-        });
-
-        showStatus(t('filesFound', originalFiles.length), 'success');
+            
+            showStatus(t('filesFound', originalFiles.length), 'success');
+        }
+        
         updatePreview();
     } catch (error) {
         showStatus(t('zipReadError', error.message), 'error');
@@ -556,16 +610,16 @@ elements.dropZone.addEventListener('drop', event => {
     event.preventDefault();
     elements.dropZone.classList.remove('dragging');
 
-    const file = event.dataTransfer.files[0];
-    if (file) {
-        handleFileSelect(file);
+    const files = event.dataTransfer.files;
+    if (files && files.length > 0) {
+        handleFileSelect(files);
     }
 });
 
 elements.fileInput.addEventListener('change', event => {
-    const file = event.target.files[0];
-    if (file) {
-        handleFileSelect(file);
+    const files = event.target.files;
+    if (files && files.length > 0) {
+        handleFileSelect(files);
     }
 });
 

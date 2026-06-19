@@ -6,7 +6,7 @@
   <a href="./README.md"><strong>English</strong></a>
 </p>
 
-Uma aplicação web para renomear ficheiros em grande escala dentro de um ZIP, com foco no que o Windows e ferramentas genéricas nem sempre resolvem bem: regras combinadas, pré-visualização clara, avisos de conflito e processamento local no navegador.
+Uma aplicação web para renomear ficheiros em grande escala, com foco no que o Windows e ferramentas genéricas nem sempre resolvem bem: regras combinadas, pré-visualização clara, avisos de conflito e processamento local no navegador. Funciona com ficheiros ZIP ou múltiplos ficheiros de qualquer tipo.
 
 ## Diferencial
 
@@ -14,6 +14,8 @@ O objetivo não é apenas “renomear ficheiros”. A proposta é tornar renomea
 
 ## Funcionalidades
 
+- Processar ficheiros ZIP diretamente, ou importar múltiplos ficheiros de qualquer tipo (documenos Office, imagens, PDFs, etc.).
+- Criar automaticamente um arquivo ZIP a partir dos ficheiros selecionados.
 - Remover ou substituir texto nos nomes dos ficheiros.
 - Usar regex opcional para regras mais avançadas.
 - Adicionar texto no início ou no fim do nome.
@@ -27,7 +29,7 @@ O objetivo não é apenas “renomear ficheiros”. A proposta é tornar renomea
 - Pré-visualizar antes de processar.
 - Detetar nomes repetidos antes de gerar o ZIP.
 - Processar tudo localmente, sem servidor.
-- Suporte para ficheiros ZIP até 500 MB.
+- Suporte para ficheiros até 500 MB no total.
 
 ## Aceder Online
 
@@ -40,10 +42,11 @@ Ou descarrega e executa localmente abrindo `index.html` no navegador.
 ## Como usar
 
 1. Abre o `index.html` no navegador ou acede através do link acima.
-2. Arrasta um ficheiro ZIP para a área de seleção ou clica para escolher.
-3. Escolhe o modo de renomeação.
-4. Ajusta as opções e confirma a pré-visualização.
-5. Clica em **Processar e transferir** para obter o ZIP final.
+2. Arrasta ficheiros para a área de seleção ou clica para selecionar um ou mais ficheiros (qualquer tipo).
+3. Se selecionares múltiplos ficheiros, serão automaticamente embalados num ZIP.
+4. Escolhe o modo de renomeação.
+5. Ajusta as opções e confirma a pré-visualização.
+6. Clica em **Processar e transferir** para obter o ZIP final.
 
 ## Exemplos
 

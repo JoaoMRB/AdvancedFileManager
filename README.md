@@ -6,7 +6,7 @@
   <a href="./README.md"><strong>English</strong></a>
 </p>
 
-A browser-based app for bulk-renaming files inside a ZIP archive, focused on the cases Windows and generic tools do not handle elegantly: combined rules, clear previews, conflict warnings and local processing.
+A browser-based app for bulk-renaming files, focused on the cases Windows and generic tools do not handle elegantly: combined rules, clear previews, conflict warnings and local processing. Works with ZIP files or multiple files of any type.
 
 ## What Makes It Different
 
@@ -14,6 +14,8 @@ The point is not simply to rename files. The goal is to make large renaming jobs
 
 ## Features
 
+- Process ZIP files directly, or import multiple files of any type (Office documents, images, PDFs, etc.).
+- Automatically create a ZIP archive from selected files.
 - Remove or replace text in file names.
 - Use optional regex for advanced rules.
 - Add text at the start or end of a name.
@@ -27,7 +29,7 @@ The point is not simply to rename files. The goal is to make large renaming jobs
 - Preview changes before processing.
 - Detect duplicate output names before creating the ZIP.
 - Process everything locally in the browser, with no server.
-- Support ZIP files up to 500 MB.
+- Support files up to 500 MB total size.
 
 ## Access Online
 
@@ -40,10 +42,11 @@ Or download and run locally by opening `index.html` in your browser.
 ## How To Use
 
 1. Open `index.html` in your browser or access via the link above.
-2. Drag a ZIP file into the drop zone or click to choose it.
-3. Choose the renaming mode.
-4. Adjust the options and review the preview.
-5. Click **Process and download** to get the final ZIP.
+2. Drag files into the drop zone or click to select one or more files (any type).
+3. If you select multiple files, they'll be automatically packed into a ZIP.
+4. Choose the renaming mode.
+5. Adjust the options and review the preview.
+6. Click **Process and download** to get the final ZIP.
 
 ## Examples
 
