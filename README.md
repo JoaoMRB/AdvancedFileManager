@@ -1,64 +1,57 @@
-🗂️ File Renamer Web App
-Um website simples para renomear arquivos em lote, especialmente útil para limpar nomes de arquivos de música e outros arquivos que contêm textos indesejados em seus nomes.
+# Advanced File Manager
 
-✨ Funcionalidades
-1. Renomeação Básica
+<p>
+  <a href="./README.pt-PT.md"><strong>Português de Portugal</strong></a>
+  &nbsp;|&nbsp;
+  <a href="./README.en.md"><strong>English</strong></a>
+</p>
 
-Remove textos específicos dos nomes dos arquivos
-Adiciona textos no início ou final dos nomes
-Visualização prévia das alterações em tempo real
+A browser-based app for bulk-renaming files inside a ZIP archive, focused on the cases Windows and generic tools do not handle elegantly: combined rules, clear previews, conflict warnings and local processing.
 
-2. Ajuste de Capitalização
+## What Makes It Different
 
-Converter para minúsculas
-Converter para MAIÚSCULAS
-Primeira Letra Maiúscula
-Primeira letra da frase
+The point is not simply to rename files. The goal is to make large renaming jobs safer, faster and easier to understand, especially for downloaded files, music libraries, exported images, course material, work archives or folders with inconsistent naming patterns.
 
-3. Renomeação em Lote
+## Features
 
-Renomeação sequencial personalizada
-Preservação de extensões de arquivo
-Opções flexíveis de formatação
+- Remove or replace text in file names.
+- Use optional regex for advanced rules.
+- Add text at the start or end of a name.
+- Convert names to lowercase, uppercase, title case or sentence case.
+- Replace separators such as `_`, `-` and `.` with spaces.
+- Clean duplicate spaces automatically.
+- Remove accents when compatibility with older systems matters.
+- Rename batches with patterns such as `File_{n}`.
+- Choose the starting number and sequence padding.
+- Keep file extensions intact.
+- Preview changes before processing.
+- Detect duplicate output names before creating the ZIP.
+- Process everything locally in the browser, with no server.
+- Support ZIP files up to 500 MB.
 
-🚀 Como Usar
+## How To Use
 
-Acesse a aplicação através do navegador
-Arraste um arquivo ZIP contendo os arquivos que deseja renomear
-Escolha o método de renomeação desejado:
+1. Open `index.html` in your browser.
+2. Drag a ZIP file into the drop zone or click to choose it.
+3. Choose the renaming mode.
+4. Adjust the options and review the preview.
+5. Click **Process and download** to get the final ZIP.
 
-Renomear: Para remover ou adicionar textos
-Capitalização: Para ajustar o formato das letras
-Renomeação em Lote: Para renomear seguindo um padrão sequencial
+## Examples
 
+Removing unwanted text:
 
-Visualize as alterações em tempo real
-Clique em "Processar e Baixar" para obter o ZIP com os arquivos renomeados
+- Before: `website.com - Top Song.mp3`
+- After: `Top Song.mp3`
 
-Exemplos de Uso
-Renomeação Básica
+Sequential batch rename with `Song_{n}`:
 
-Antes: "website.com - Música Top.mp3"
-Depois: "Música Top.mp3"
+- Before: `website.com - song1.mp3`
+- After: `Song_001.mp3`
 
-Renomeação em Lote
-Usando o padrão "Musica_{n}":
+## Technologies
 
-Antes: "website.com - música1.mp3"
-Depois: "Musica_1.mp3"
-
-💻 Tecnologias Utilizadas
-
-HTML5
-CSS3
-JavaScript (ES6+)
-JSZip - Para manipulação de arquivos ZIP
-
-⚙️ Características Técnicas
-
-Processamento totalmente no navegador (não requer servidor)
-Suporte para arquivos ZIP de até 500MB
-Interface responsiva
-Suporte para drag and drop
-Validação de arquivos e tratamento de erros
-Barra de progresso durante o processamento
+- HTML5
+- CSS3
+- JavaScript
+- JSZip

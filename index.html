@@ -1,87 +1,164 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
-    <title>Gerenciador de Arquivos Avançado</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🗂️</text></svg>">
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor Avançado de Ficheiros</title>
+    <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Gerenciador de Arquivos Avançado</h1>
-
-        <div class="tabs">
-            <button class="tab active" data-tab="rename">Renomear</button>
-            <button class="tab" data-tab="case">Capitalização</button>
-            <button class="tab" data-tab="batch">Renomeação em Lote</button>
-        </div>
-
-        <div id="renameTab" class="tab-content active">
-            <div class="options-panel">
-                <div class="input-group">
-                    <label>Texto para Remover:</label>
-                    <input type="text" id="textToRemove" placeholder="Ex: www.site.com -">
-                </div>
-                <div class="input-group">
-                    <label>Texto para Adicionar:</label>
-                    <input type="text" id="textToAdd" placeholder="Ex: [Processado]">
-                    <select id="addPosition" style="margin-top: 5px">
-                        <option value="start">No início</option>
-                        <option value="end">No final</option>
-                    </select>
+    <main class="app-shell">
+        <header class="app-header">
+            <div class="header-logo">
+                <img class="logo-mark" src="assets/icons/favicon.svg" alt="" aria-hidden="true">
+                <div>
+                    <p class="eyebrow">Malog</p>
+                    <h1 data-i18n="appTitle">Gestor Avançado de Ficheiros</h1>
+                    <p class="tagline" data-i18n="tagline">Renomeação em massa com pré-visualização clara e processamento local.</p>
                 </div>
             </div>
-        </div>
 
-        <div id="caseTab" class="tab-content">
-            <div class="options-panel">
-                <div class="input-group">
-                    <label>Formato de Capitalização:</label>
-                    <select id="caseFormat">
-                        <option value="lower">minúsculas</option>
-                        <option value="upper">MAIÚSCULAS</option>
-                        <option value="title">Primeira Letra Maiúscula</option>
-                        <option value="sentence">Primeira letra da frase</option>
-                    </select>
+            <div class="header-actions">
+                <a class="github-link" href="https://github.com/JoaoMRB">GitHub</a>
+                <button id="themeButton" class="utility-button" type="button" aria-label="Toggle theme">Light</button>
+                <div class="language-switcher" aria-label="Language">
+                    <button class="language-button active" type="button" data-lang="pt-PT">PT</button>
+                    <button class="language-button" type="button" data-lang="en">EN</button>
                 </div>
             </div>
-        </div>
+        </header>
 
-        <div id="batchTab" class="tab-content">
-            <div class="options-panel">
-                <div class="input-group">
-                    <label>Padrão de Renomeação:</label>
-                    <input type="text" id="batchPattern" placeholder="Ex: Arquivo_{n}">
-                    <small style="display: block; margin-top: 5px; color: #666;">
-                        Use {n} para número sequencial, {ext} para extensão
-                    </small>
+        <section class="workspace">
+            <aside class="control-panel">
+                <div class="panel-title">
+                    <span data-i18n="rulesTitle">Regras</span>
+                    <span class="panel-kicker">Local ZIP</span>
                 </div>
-                <div class="input-group">
-                    <label>Número Inicial:</label>
-                    <input type="number" id="startNumber" value="1" min="0">
+
+                <div class="tabs" role="tablist">
+                    <button class="tab active" type="button" data-tab="rename" data-i18n="tabRename">Renomear</button>
+                    <button class="tab" type="button" data-tab="case" data-i18n="tabCase">Texto</button>
+                    <button class="tab" type="button" data-tab="batch" data-i18n="tabBatch">Sequência</button>
                 </div>
-            </div>
-        </div>
 
-        <div class="drop-zone" id="dropZone">
-            Arraste um arquivo ZIP aqui ou clique para selecionar
-            <input type="file" id="fileInput" accept=".zip" style="display: none">
-        </div>
+                <section id="renameTab" class="tab-content active">
+                    <div class="input-group">
+                        <label for="textToRemove" data-i18n="removeTextLabel">Texto a encontrar</label>
+                        <input type="text" id="textToRemove" data-i18n-placeholder="removeTextPlaceholder" placeholder="Ex.: www.site.com -">
+                    </div>
+                    <div class="input-group">
+                        <label for="replaceText" data-i18n="replaceTextLabel">Substituir por</label>
+                        <input type="text" id="replaceText" data-i18n-placeholder="replaceTextPlaceholder" placeholder="Deixa vazio para remover">
+                    </div>
+                    <label class="check-row">
+                        <input type="checkbox" id="useRegex">
+                        <span data-i18n="useRegex">Usar regex</span>
+                    </label>
+                    <div class="input-group">
+                        <label for="textToAdd" data-i18n="addTextLabel">Texto extra</label>
+                        <input type="text" id="textToAdd" data-i18n-placeholder="addTextPlaceholder" placeholder="Ex.: [Final]">
+                    </div>
+                    <div class="input-group">
+                        <label for="addPosition" data-i18n="addPositionLabel">Posição</label>
+                        <select id="addPosition">
+                            <option value="start" data-i18n="positionStart">No início</option>
+                            <option value="end" data-i18n="positionEnd">No fim</option>
+                        </select>
+                    </div>
+                </section>
 
-        <div class="progress-bar" id="progressBar">
-            <div class="progress-bar-fill"></div>
-        </div>
+                <section id="caseTab" class="tab-content">
+                    <div class="input-group">
+                        <label for="caseFormat" data-i18n="caseFormatLabel">Capitalização</label>
+                        <select id="caseFormat">
+                            <option value="none" data-i18n="caseNone">Manter</option>
+                            <option value="lower" data-i18n="caseLower">minúsculas</option>
+                            <option value="upper" data-i18n="caseUpper">MAIÚSCULAS</option>
+                            <option value="title" data-i18n="caseTitle">Título</option>
+                            <option value="sentence" data-i18n="caseSentence">Frase</option>
+                        </select>
+                    </div>
+                    <label class="check-row">
+                        <input type="checkbox" id="normalizeSeparators" checked>
+                        <span data-i18n="normalizeSeparators">Trocar separadores por espaços</span>
+                    </label>
+                    <label class="check-row">
+                        <input type="checkbox" id="trimSpaces" checked>
+                        <span data-i18n="trimSpaces">Limpar espaços duplicados</span>
+                    </label>
+                    <label class="check-row">
+                        <input type="checkbox" id="removeAccents">
+                        <span data-i18n="removeAccents">Remover acentos</span>
+                    </label>
+                </section>
 
-        <button id="processButton" class="button" disabled>Processar e Baixar</button>
-        <button id="previewButton" class="button" disabled>Visualizar Alterações</button>
+                <section id="batchTab" class="tab-content">
+                    <div class="input-group">
+                        <label for="batchPattern" data-i18n="batchPatternLabel">Padrão</label>
+                        <input type="text" id="batchPattern" data-i18n-placeholder="batchPatternPlaceholder" placeholder="Ex.: Ficheiro_{n}">
+                        <small data-i18n="batchPatternHelp">Usa {n} para o número e {ext} para a extensão.</small>
+                    </div>
+                    <div class="split-fields">
+                        <div class="input-group">
+                            <label for="startNumber" data-i18n="startNumberLabel">Início</label>
+                            <input type="number" id="startNumber" value="1" min="0">
+                        </div>
+                        <div class="input-group">
+                            <label for="paddingSize" data-i18n="paddingSizeLabel">Dígitos</label>
+                            <input type="number" id="paddingSize" value="3" min="1" max="8">
+                        </div>
+                    </div>
+                </section>
 
-        <div id="fileList"></div>
-    </div>
+                <div class="actions">
+                    <button id="previewButton" class="button secondary" type="button" disabled data-i18n="previewButton">Pré-visualizar</button>
+                    <button id="processButton" class="button" type="button" disabled data-i18n="processButton">Processar e transferir</button>
+                </div>
+            </aside>
+
+            <section class="preview-panel">
+                <div class="panel-title">
+                    <span data-i18n="previewPanelTitle">Pré-visualização</span>
+                    <span class="panel-kicker">No server</span>
+                </div>
+
+                <label class="drop-zone" id="dropZone" for="fileInput">
+                    <span class="drop-title" data-i18n="dropTitle">Larga o ZIP aqui</span>
+                    <span class="drop-copy" data-i18n="dropZone">ou clica para selecionar um ficheiro até 500 MB.</span>
+                    <input type="file" id="fileInput" accept=".zip,application/zip" hidden>
+                </label>
+
+                <div class="stats-grid" aria-live="polite">
+                    <div class="stat">
+                        <span data-i18n="statFiles">Ficheiros</span>
+                        <strong id="fileCount">0</strong>
+                    </div>
+                    <div class="stat">
+                        <span data-i18n="statChanged">Alterados</span>
+                        <strong id="changedCount">0</strong>
+                    </div>
+                    <div class="stat">
+                        <span data-i18n="statConflicts">Conflitos</span>
+                        <strong id="conflictCount">0</strong>
+                    </div>
+                </div>
+
+                <div class="progress-bar" id="progressBar">
+                    <div class="progress-bar-fill"></div>
+                </div>
+
+                <div id="statusMessage" class="status-message" role="status" aria-live="polite"></div>
+                <div id="fileList" class="file-list"></div>
+            </section>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <span data-i18n="createdBy">Criado por</span> <a href="https://github.com/JoaoMRB">Malog</a>
+    </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="script.js"></script>
-    <footer>
-        Criado por <a href="https://github.com/JoaoMRB">@JoaoRb</a>
-    </footer>
-            </body>
-            </html>
+    <script src="assets/js/script.js"></script>
+</body>
+</html>
